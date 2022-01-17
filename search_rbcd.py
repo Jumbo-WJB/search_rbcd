@@ -9,7 +9,7 @@ class SearchRBCD(object):
         self.ldap_session = ldap_session
 
     def get_sid_info(self,root,sid):
-        self.ldap_session.search(root, '(objectSid=%s)' % escape_filter_chars(sid), attributes=['samaccountname'])
+        self.ldap_session.search(root, '(objectSid=%s)' % escape_filter_chars(sid), attributes=['samaccountname']) # https://github.com/SecureAuthCorp/impacket/blob/ea023b2813ba512cbd556e59415fd020b9fbc423/examples/rbcd.py#L419
         try:
             dn = self.ldap_session.entries[0].entry_dn
             samname = self.ldap_session.entries[0]['samaccountname']
@@ -21,6 +21,7 @@ class SearchRBCD(object):
     def get_computer_AllowedToActOnBehalfOfOtherIdentity(self):
 
         root = self.ldap_server.info.other['defaultNamingContext'][0]
+        print(root)
         self.ldap_session.search(root,"(&(objectCategory=computer)(objectClass=computer))",attributes=['cn','msDS-AllowedToActOnBehalfOfOtherIdentity'])
         searchlength = len(self.ldap_session.entries)
         ldap_entriess.append(self.ldap_session.entries)
@@ -31,7 +32,7 @@ class SearchRBCD(object):
             if searchresult['msDS-AllowedToActOnBehalfOfOtherIdentity']:
                 AllowedToActOnBehalfOfOtherIdentity = searchresult['msDS-AllowedToActOnBehalfOfOtherIdentity'][0]
                 # print(AllowedToActOnBehalfOfOtherIdentity)
-                sd = SR_SECURITY_DESCRIPTOR(data=AllowedToActOnBehalfOfOtherIdentity)
+                sd = SR_SECURITY_DESCRIPTOR(data=AllowedToActOnBehalfOfOtherIdentity) # https://github.com/SecureAuthCorp/impacket/blob/ea023b2813ba512cbd556e59415fd020b9fbc423/examples/rbcd.py#L403
                 for ace in sd['Dacl'].aces:
                     AllowedToActOnBehalfOfOtherIdentitySID = ace['Ace']['Sid'].formatCanonical()
                     SamAccountName = self.get_sid_info(root,AllowedToActOnBehalfOfOtherIdentitySID)[1]
