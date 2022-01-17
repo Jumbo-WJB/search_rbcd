@@ -1,0 +1,3 @@
+C:\Users\jumbo\Desktop\SharpAllowedToAct\search_rbcd\obj\Release\search_rbcd.csproj.CoreCompileInputs.cache
+C:\Users\jumbo\Desktop\SharpAllowedToAct\search_rbcd\obj\Release\search_rbcd.exe
+C:\Users\jumbo\Desktop\SharpAllowedToAct\search_rbcd\obj\Release\search_rbcd.pdb
